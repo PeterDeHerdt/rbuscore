@@ -83,33 +83,14 @@ else ()
 endif (BUILD_FOR_DESKTOP)
 
 if (BUILD_FOR_DESKTOP)
-    ExternalProject_Add(
-        msgpack
-        GIT_REPOSITORY https://github.com/msgpack/msgpack-c.git
-        GIT_TAG 2.1.4
-        BUILD_IN_SOURCE 0
-        UPDATE_DISCONNECTED 1
-        PREFIX ${CMAKE_CURRENT_BINARY_DIR}/msgpack
-        BINARY_DIR ${CMAKE_CURRENT_BINARY_DIR}/msgpack/build
-        CMAKE_ARGS "-DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}"
-        BUILD_COMMAND make)
-
     message("Building for desktop")
     set(MSGPACK_LIBRARIES "-lmsgpackc")
+endif (BUILD_FOR_DESKTOP)
 
-    include_directories(
-        ${CMAKE_CURRENT_SOURCE_DIR}
-        ${CMAKE_CURRENT_BINARY_DIR}/msgpack/src/msgpack/include)
-    link_directories(
-        ${CMAKE_CURRENT_SOURCE_DIR}
-        ${CMAKE_CURRENT_BINARY_DIR}/msgpack/build
-        ${CMAKE_BINARY_DIR}
-        ${LIBRARY_DIR})
-else()
     include_directories(${CMAKE_CURRENT_SOURCE_DIR} ${INCLUDE_DIR})
     include_directories(${RTMESSAGE_INCLUDE_DIRS} ${MSGPACK_INCLUDE_DIRS} ${RDKLOGGER_INCLUDE_DIRS})
     link_directories(${CMAKE_CURRENT_SOURCE_DIR} ${LIBRARY_DIR})
-endif (BUILD_FOR_DESKTOP)
+
 
     add_subdirectory(rbus-core/lib)
     add_subdirectory(rbus-core/session_manager)
